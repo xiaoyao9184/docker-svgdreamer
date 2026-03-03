@@ -1,0 +1,3 @@
+[submodule "SVGDreamer"]
+	path = SVGDreamer
+	url = https://github.com/ximinng/SVGDreamer.git
