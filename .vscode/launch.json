@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debugpy: svgdreamer",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/SVGDreamer/svgdreamer.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/SVGDreamer",
+            "args": [
+                "x=iconography",
+                "skip_sive=False",
+                "prompt='an image of Batman. full body action pose, complete detailed body. white background. empty background, high quality, 4K, ultra realistic'",
+                "token_ind=4",
+                "x.vpsd.t_schedule='randint'",
+                "result_path='./logs/batman'",
+                "multirun=True"
+            ],
+            "env": {
+                // "HF_ENDPOINT": "https://hf-mirror.com",
+                // "HF_HUB_ETAG_TIMEOUT": "1000",
+                // "HF_HUB_DOWNLOAD_TIMEOUT": "1000",
+                "XDG_CACHE_HOME": "${workspaceFolder}/cache"
+            },
+            "justMyCode": false
+        }
+    ]
+}

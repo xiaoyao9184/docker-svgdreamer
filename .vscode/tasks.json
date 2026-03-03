@@ -1,0 +1,105 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "docker: compose up@gpu-offline",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/docker/up@gpu-offline/"
+            },
+            "dependsOn": [
+                "docker: build main",
+                "huggingface-cli: download models",
+            ],
+            "command": "docker compose -p svgdreamer up"
+        },
+        {
+            "label": "docker: build main",
+            "type": "shell",
+            "dependsOn": [
+                "shell: fix models path"
+            ],
+            "command": "docker build -t xiaoyao9184/svgdreamer:main -f ./docker/build@source/dockerfile ."
+        },
+        {
+            "label": "conda: python svgdreamer",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/SVGDreamer",
+                "env": {
+                    // "HF_ENDPOINT": "https://hf-mirror.com",
+                    // "HF_HUB_ETAG_TIMEOUT": "1000",
+                    // "HF_HUB_DOWNLOAD_TIMEOUT": "1000",
+                    "XDG_CACHE_HOME": "${workspaceFolder}/cache"
+                }
+            },
+            "dependsOn": [
+                "conda: create env",
+                "huggingface-cli: download models",
+                "shell: fix models path"
+            ],
+            "command": [
+                "conda",
+                "run",
+                "--no-capture-output",
+                "-n",
+                "svgdreamer",
+                "python",
+                "svgdreamer.py",
+                "x=iconography",
+                "skip_sive=False",
+                "\"prompt='an image of Batman. full body action pose, complete detailed body. white background. empty background, high quality, 4K, ultra realistic'\"",
+                "token_ind=4",
+                "x.vpsd.t_schedule=randint",
+                "result_path=./logs/batman",
+                "multirun=True"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "shell: fix models path",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "command": [
+                "sed -i 's|runwayml/stable-diffusion-v1-5|stable-diffusion-v1-5/stable-diffusion-v1-5|g' ./SVGDreamer/svgdreamer/diffusers_warp/__init__.py",
+                "&& sed -i 's|stabilityai/stable-diffusion-2-1-base|sd2-community/stable-diffusion-2-1-base|g' ./SVGDreamer/svgdreamer/diffusers_warp/__init__.py",
+                "&& sed -i 's|stabilityai/stable-diffusion-2-1|sd2-community/stable-diffusion-2-1|g' ./SVGDreamer/svgdreamer/diffusers_warp/__init__.py",
+            ]
+        },
+        {
+            "label": "huggingface-cli: download models",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    // "HF_ENDPOINT": "https://hf-mirror.com",
+                    // "HF_HUB_ETAG_TIMEOUT": "1000",
+                    // "HF_HUB_DOWNLOAD_TIMEOUT": "1000"
+                }
+            },
+            "command": [
+                "hf download sd2-community/stable-diffusion-2-1-base --cache-dir ./cache/huggingface/hub",
+            ]
+        },
+        {
+            "label": "conda: create env",
+            "type": "shell",
+            "command": [
+                "conda env create -f ./environment.yml"
+            ],
+            "options": {
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": ["-l", "-c"]
+                },
+                "env": {
+                    "TMPDIR": "~/tmp"
+                }
+            }
+        }
+    ]
+}
