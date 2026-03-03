@@ -1,0 +1,26 @@
+
+
+services:
+  svgdreamer_cli:
+    image: xiaoyao9184/svgdreamer:main
+    container_name: svgdreamer_cli
+    command:
+      - x=iconography
+      - skip_sive=False
+      - "prompt='an image of Batman. full body action pose, complete detailed body. white background. empty background, high quality, 4K, ultra realistic'"
+      - token_ind=4
+      - "x.vpsd.t_schedule='randint'"
+      - "result_path='./logs/batman'"
+      - multirun=True
+    environment:
+      - TORCH_DEVICE=cuda
+      - HF_HUB_OFFLINE=true
+    volumes:
+      - ./../../cache:/root/.cache
+      - ./../../logs:/app/logs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [ gpu ]

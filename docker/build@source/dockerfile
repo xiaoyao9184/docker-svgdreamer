@@ -1,0 +1,29 @@
+FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    # for clone CLIP
+    git \
+    # for cairosvg
+    libcairo2-dev \
+    # for opencv OpenGL
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --upgrade pip
+
+COPY ./SVGDreamer /app
+COPY ./requirements.txt /app
+# fix `pkg_resources` error when install `visdom`
+RUN pip3 install setuptools==80.10.2 \
+    && pip3 install visdom==0.2.4 --no-build-isolation
+RUN pip3 install --no-cache-dir \
+    -r requirements.txt
+
+VOLUME /root/.cache
+
+ENTRYPOINT ["python", "svgdreamer.py"]
+CMD []
