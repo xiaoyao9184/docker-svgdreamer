@@ -39,9 +39,9 @@ See [cache/README.md](./cache/README.md) for detailed instructions.
 
 # Service
 
-By default, the Docker container runs the Gradio app, which comes from the original project.
+By default, the Docker container runs the SVGDreamer cli, which comes from the original project.
 
 # Change
 
-You can fork this project and build your own image. You will need to provide the following variables: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, `HF_USERNAME`, `HF_TOKEN`.
+You can fork this project and build your own image. You will need to provide the following variables: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`.
 See [this](https://github.com/docker/login-action#docker-hub) for more details.

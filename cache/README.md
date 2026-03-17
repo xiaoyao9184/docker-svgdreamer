@@ -112,5 +112,5 @@ hf download sd2-community/stable-diffusion-2-1-base --cache-dir ./cache/huggingf
 hf download sd2-community/stable-diffusion-2-1 --cache-dir ./cache/huggingface/hub
 hf download stabilityai/stable-diffusion-xl-base-1.0 --cache-dir ./cache/huggingface/hub
 hf download CompVis/stable-diffusion-v1-4 --cache-dir ./cache/huggingface/hub
-hf download stable-diffusion-v1-5/stable-diffusion-v1- --cache-dir ./cache/huggingface/hub
+hf download stable-diffusion-v1-5/stable-diffusion-v1-5 --cache-dir ./cache/huggingface/hub
 ```
